@@ -2,7 +2,7 @@ import argparse, yaml, requests, downloader, subprocess
 prev = ""
 parser = argparse.ArgumentParser(
     prog="oscollector",
-    description="the new package manager"
+    description="the marvelous package manager"
 )
 subparsers = parser.add_subparsers(dest="command")
 install_parser = subparsers.add_parser("install")
@@ -16,7 +16,7 @@ if g.command == "install":
         parser.error(f'Package "{g.package}" not found')
     else:
         data = yaml.safe_load(req.text)
-        print(f"Found {data["details"]["name"]} by {data["details"]["author"]}")
+        print(f"Found {data['details']['name']} by {data['details']['author']}")
         steps = data["install"]["steps"]
         for i in steps:
             action = list(i.keys())[0]
@@ -25,6 +25,5 @@ if g.command == "install":
                 print(f"Downloading the file at {url}...")
                 prev = downloader.download(url)
             elif action == "execute":
-                action = list(i.keys())[0]
                 command = i[action]["command"].replace("%pname%", prev)
-                subprocess.run("")
+                subprocess.run(command, shell=True, check=True)
